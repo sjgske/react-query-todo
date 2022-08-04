@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Container from "../components/Container";
@@ -9,14 +9,20 @@ import Header from "../components/Header";
 import { validateEmail } from "../utils";
 import api from "../api";
 
-const SignUp = () => {
+const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  });
+
+  const handleLogin = async (e: React.MouseEvent) => {
     e.preventDefault();
 
     try {
@@ -24,13 +30,13 @@ const SignUp = () => {
         email,
         password,
       };
-      await api.post("/users/create", data).then((res) => {
+      await api.post("/users/login", data).then((res) => {
         alert(res.data.message);
-        navigate("/auth/login");
+        localStorage.setItem("token", res.data.token);
+        navigate("/");
       });
-    } catch (err) {
-      const { response } = err;
-      alert(response.data.details);
+    } catch (err: any) {
+      alert(err.response.data.details);
     }
   };
 
@@ -67,46 +73,47 @@ const SignUp = () => {
         <Link to="/">Home</Link>
       </Header>
       <Container>
-        <Flexbox>
-          <Box color="#fff" padding="3rem">
-            <Form>
-              <Heading>회원가입</Heading>
-              {fieldContent.map((el) => (
-                <Field key={el.type}>
-                  <FieldLabel htmlFor={el.type}>{el.label}</FieldLabel>
-                  <TextBox width="17rem" padding="0.9rem">
-                    <FieldInput
-                      type={el.type}
-                      id={el.type}
-                      placeholder={el.placeholder}
-                      value={el.value}
-                      onChange={(e) => el.onChange(e.target.value)}
-                    />
-                  </TextBox>
-                </Field>
-              ))}
+        <StyledBox padding="3rem">
+          <Form>
+            <Heading>로그인</Heading>
+            {fieldContent.map((el) => (
+              <Field key={el.type}>
+                <FieldLabel htmlFor={el.type}>{el.label}</FieldLabel>
+                <TextBox width="17rem" padding="0.9rem">
+                  <FieldInput
+                    type={el.type}
+                    id={el.type}
+                    placeholder={el.placeholder}
+                    value={el.value}
+                    onChange={(e) => el.onChange(e.target.value)}
+                  />
+                </TextBox>
+              </Field>
+            ))}
 
-              <Button type="submit" width="100%" disabled={disabled} onClick={handleSubmit}>
-                회원가입
-              </Button>
-            </Form>
-          </Box>
-        </Flexbox>
+            <Button width="100%" disabled={disabled} onClick={handleLogin}>
+              로그인
+            </Button>
+            <SmallLink to="/auth/signup">회원가입</SmallLink>
+          </Form>
+        </StyledBox>
       </Container>
     </>
   );
 };
-
-const Flexbox = styled.div`
-  display: flex;
-  gap: 8rem;
-`;
 
 const Form = styled.form``;
 
 const Heading = styled.h1`
   font-size: 1.6rem;
   margin-bottom: 3rem;
+`;
+
+const StyledBox = styled(Box)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const Field = styled.div`
@@ -124,4 +131,13 @@ const FieldLabel = styled.label``;
 
 const FieldInput = styled.input``;
 
-export default SignUp;
+const SmallLink = styled(Link)`
+  display: block;
+  width: fit-content;
+  margin: 1rem auto 0;
+  font-size: 0.8rem;
+  color: #555;
+  text-decoration: underline;
+`;
+
+export default Login;

@@ -1,6 +1,15 @@
+import React from "react";
 import styled from "styled-components";
 
-const IconButton = ({ color, fontColor, children, size, onClick }) => {
+interface IIconButton {
+  color: string;
+  fontColor: string;
+  children: JSX.Element;
+  size: string;
+  onClick(e?: object): void;
+}
+
+const IconButton = ({ color, fontColor, children, size, onClick }: IIconButton) => {
   return (
     <StyledIconButton color={color} fontColor={fontColor} size={size} onClick={onClick}>
       {children}
@@ -8,7 +17,7 @@ const IconButton = ({ color, fontColor, children, size, onClick }) => {
   );
 };
 
-const StyledIconButton = styled.button`
+const StyledIconButton = styled.button<IIconButton>`
   display: flex;
   justify-content: center;
   align-items: center;

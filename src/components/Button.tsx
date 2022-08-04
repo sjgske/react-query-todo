@@ -1,14 +1,23 @@
+import React from "react";
 import styled from "styled-components";
 
-const Button = ({ type, color, width, disabled, children, onClick }) => {
+interface IButton {
+  color?: string;
+  width?: string;
+  disabled?: boolean;
+  children: JSX.Element | string;
+  onClick?(e?: React.MouseEvent): void;
+}
+
+const Button = ({ color, width, disabled, children, onClick }: IButton) => {
   return (
-    <StyledButton type={type} color={color} width={width} disabled={disabled} onClick={onClick}>
+    <StyledButton color={color} width={width} disabled={disabled} onClick={onClick}>
       {children}
     </StyledButton>
   );
 };
 
-const StyledButton = styled.button`
+const StyledButton = styled.button<IButton>`
   width: ${({ width }) => width};
   padding: 0.9rem;
   border-radius: 100px;

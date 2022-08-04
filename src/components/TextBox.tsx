@@ -1,6 +1,13 @@
+import React from "react";
 import styled from "styled-components";
 
-const TextBox = ({ width, padding, children }) => {
+interface ITextBox {
+  width?: string;
+  padding: string;
+  children: JSX.Element;
+}
+
+const TextBox = ({ width, padding, children }: ITextBox) => {
   return (
     <StyledTextBox width={width} padding={padding}>
       {children}
@@ -8,7 +15,7 @@ const TextBox = ({ width, padding, children }) => {
   );
 };
 
-const StyledTextBox = styled.div`
+const StyledTextBox = styled.div<ITextBox>`
   width: ${({ width }) => width};
   padding: ${({ padding }) => padding};
   border-radius: 6px;

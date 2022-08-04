@@ -1,7 +1,12 @@
+import React from "react";
 import styled from "styled-components";
 import Container from "./Container";
 
-const Header = ({ children }) => {
+interface IHeader {
+  children: JSX.Element | JSX.Element[];
+}
+
+const Header = ({ children }: IHeader) => {
   return (
     <StyledHeader>
       <Container>{children}</Container>
@@ -22,7 +27,7 @@ const StyledHeader = styled.header`
   z-index: 30;
   background-color: #fff;
 
-  & > div > * {
+  & a {
     font-size: 1.1rem;
     margin-left: auto;
     margin-right: 0;

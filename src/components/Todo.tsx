@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Container from "./Container";
 import Button from "./Button";
@@ -11,23 +11,24 @@ const Todo = () => {
   const [todos, setTodos] = useState([]);
 
   const getTodos = async () => {
-    await api.get("/todos").then((res) => {
-      setTodos(res.data.data);
-    });
+    await api.get("/todos").then((res) => setTodos(res.data.data));
   };
 
-  const createTodo = async (e) => {
+  const createTodo = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       const { title, content } = e.target;
       if (!title.value || !content.value) return;
-      const data = { title: title.value, content: content.value };
+      const data = {
+        title: title.value,
+        content: content.value,
+      };
       await api.post("/todos", data);
+      alert("추가되었습니다.");
       getTodos();
-    } catch (err) {
-      const { response } = err;
-      alert(response.data.details);
+    } catch (err: any) {
+      alert(err.response.data.details);
     }
   };
 
@@ -38,17 +39,17 @@ const Todo = () => {
   return (
     <Container>
       <Form onSubmit={createTodo}>
-        <Box color="transparent" padding="2.2rem">
+        <Box padding="2.2rem">
           <TodoHeader>Todo List</TodoHeader>
           <TextGroup>
             <TextBox padding="0.7rem" width="15rem">
               <TodoInput type="text" name="title" placeholder="제목을 입력하세요." />
             </TextBox>
             <TextBox padding="0.7rem" width="15rem">
-              <TodoTextarea type="text" name="content" placeholder="내용을 입력하세요." />
+              <TodoTextarea name="content" placeholder="내용을 입력하세요." />
             </TextBox>
           </TextGroup>
-          <Button type="submit" color="#191a20" fontColor="#fff" width="100%">
+          <Button color="#191a20" width="100%">
             추가
           </Button>
         </Box>
@@ -57,7 +58,7 @@ const Todo = () => {
       <TodoList>
         {todos.length &&
           todos.map(({ id, title, content }) => (
-            <TodoItem id={id} title={title} content={content} getTodos={getTodos} />
+            <TodoItem key={id} id={id} title={title} content={content} getTodos={getTodos} />
           ))}
       </TodoList>
     </Container>
@@ -69,7 +70,9 @@ const TodoHeader = styled.h1`
   margin-bottom: 2.4rem;
 `;
 
-const Form = styled.form``;
+const Form = styled.form`
+  margin-top: 5rem;
+`;
 
 const TodoList = styled.ul`
   margin-bottom: 5rem;

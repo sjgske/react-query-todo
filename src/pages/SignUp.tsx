@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Container from "../components/Container";
@@ -9,20 +9,14 @@ import Header from "../components/Header";
 import { validateEmail } from "../utils";
 import api from "../api";
 
-const Login = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/");
-    }
-  });
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
 
     try {
@@ -30,14 +24,12 @@ const Login = () => {
         email,
         password,
       };
-      await api.post("/users/login", data).then((res) => {
+      await api.post("/users/create", data).then((res) => {
         alert(res.data.message);
-        localStorage.setItem("token", res.data.token);
-        navigate("/");
+        navigate("/auth/login");
       });
-    } catch (err) {
-      const { response } = err;
-      alert(response.data.details);
+    } catch (err: any) {
+      alert(err.response.data.details);
     }
   };
 
@@ -75,9 +67,9 @@ const Login = () => {
       </Header>
       <Container>
         <Flexbox>
-          <Box color="#fff" padding="3rem">
+          <Box padding="3rem">
             <Form>
-              <Heading>로그인</Heading>
+              <Heading>회원가입</Heading>
               {fieldContent.map((el) => (
                 <Field key={el.type}>
                   <FieldLabel htmlFor={el.type}>{el.label}</FieldLabel>
@@ -93,10 +85,9 @@ const Login = () => {
                 </Field>
               ))}
 
-              <Button type="submit" width="100%" disabled={disabled} onClick={handleSubmit}>
-                로그인
+              <Button width="100%" disabled={disabled} onClick={handleSubmit}>
+                회원가입
               </Button>
-              <SmallLink to="/auth/signup">회원가입</SmallLink>
             </Form>
           </Box>
         </Flexbox>
@@ -104,8 +95,6 @@ const Login = () => {
     </>
   );
 };
-
-export default Login;
 
 const Flexbox = styled.div`
   display: flex;
@@ -134,11 +123,4 @@ const FieldLabel = styled.label``;
 
 const FieldInput = styled.input``;
 
-const SmallLink = styled(Link)`
-  display: block;
-  width: fit-content;
-  margin: 1rem auto 0;
-  font-size: 0.8rem;
-  color: #555;
-  text-decoration: underline;
-`;
+export default SignUp;

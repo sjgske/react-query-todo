@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import Button from "./Button";
 import Box from "./Box";
@@ -5,7 +6,14 @@ import TextBox from "./TextBox";
 import api from "../api";
 import { useState } from "react";
 
-const TodoItem = ({ id, title, content, getTodos }) => {
+interface ITodoItem {
+  id: string;
+  title: string;
+  content: string;
+  getTodos(): void;
+}
+
+const TodoItem = ({ id, title, content, getTodos }: ITodoItem) => {
   const [disabled, setDisabled] = useState(true);
   const [titleValue, setTitleValue] = useState(title);
   const [contentValue, setContentValue] = useState(content);
@@ -18,38 +26,35 @@ const TodoItem = ({ id, title, content, getTodos }) => {
     setDisabled(true);
   };
 
-  const updateTodo = async (e) => {
+  const updateTodo = async (e: React.MouseEvent) => {
     e.preventDefault();
 
     try {
       const data = { title: titleValue, content: contentValue };
-      console.log(data);
       await api.put(`/todos/${id}`, data);
       alert("수정되었습니다.");
       getTodos();
       setDisabled(true);
-    } catch (err) {
-      const { response } = err;
-      alert(response.data.details);
+    } catch (err: any) {
+      alert(err.response.data.details);
     }
   };
 
-  const deleteTodo = async (e) => {
+  const deleteTodo = async (e: React.MouseEvent) => {
     e.preventDefault();
 
     try {
       await api.delete(`/todos/${id}`);
       alert("삭제되었습니다.");
       getTodos();
-    } catch (err) {
-      const { response } = err;
-      alert(response.data.details);
+    } catch (err: any) {
+      alert(err.response.data.details);
     }
   };
 
   return (
     <StyledTodoItem key={id}>
-      <Box color="transparent" padding="2rem">
+      <Box padding="2rem">
         <TextGroup>
           <TextBox padding="0.7rem">
             <TodoInput
@@ -61,7 +66,6 @@ const TodoItem = ({ id, title, content, getTodos }) => {
           </TextBox>
           <TextBox padding="0.7rem">
             <TodoTextarea
-              type="text"
               value={contentValue}
               onChange={(e) => setContentValue(e.target.value)}
               disabled={disabled}

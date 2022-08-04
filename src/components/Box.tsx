@@ -1,14 +1,16 @@
+import React from "react";
 import styled from "styled-components";
 
-const Box = ({ padding, children, className }) => {
-  return (
-    <StyledBox className={className} padding={padding}>
-      {children}
-    </StyledBox>
-  );
+interface IBox {
+  padding: string;
+  children: JSX.Element | JSX.Element[];
+}
+
+const Box = ({ padding, children }: IBox) => {
+  return <StyledBox padding={padding}>{children}</StyledBox>;
 };
 
-const StyledBox = styled.div`
+const StyledBox = styled.div<IBox>`
   display: flex;
   flex-direction: column;
   padding: ${({ padding }) => padding};

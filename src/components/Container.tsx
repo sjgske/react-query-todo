@@ -1,10 +1,15 @@
+import React from "react";
 import styled from "styled-components";
 
-const Container = ({ children }) => {
+interface IContainer {
+  children: JSX.Element | JSX.Element[];
+}
+
+const Container = ({ children }: IContainer) => {
   return <StyledContainer className="container">{children}</StyledContainer>;
 };
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.section<IContainer>`
   display: flex;
   flex-direction: column;
   width: 100%;
