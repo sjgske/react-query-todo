@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const TextBox = ({ width, padding, children }) => {
   return (

@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-const Button = ({ type, width, padding, disabled, children }) => {
+const Button = ({ type, width, disabled, children }) => {
   return (
-    <StyledButton type={type} width={width} padding={padding} disabled={disabled}>
+    <StyledButton type={type} width={width} disabled={disabled}>
       {children}
     </StyledButton>
   );
@@ -10,9 +10,10 @@ const Button = ({ type, width, padding, disabled, children }) => {
 
 const StyledButton = styled.button`
   width: ${({ width }) => width};
-  padding: ${({ padding }) => padding};
+  padding: 0.9rem;
   border-radius: 100px;
   color: #fff;
+  transition: background-color 200ms ease-in;
 
   ${({ disabled }) =>
     disabled

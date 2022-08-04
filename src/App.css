@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap");
 
 /* Reset */
 
@@ -10,7 +10,7 @@
 
 html {
   height: 100%;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   color: #191a20;
 }
 
@@ -37,7 +37,7 @@ button,
 input,
 textarea,
 select {
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: "Noto Sans KR", sans-serif;
   border: none;
   outline: none;
   background-color: transparent;
