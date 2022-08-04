@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Box = ({ color, children, className }) => {
   return <StyledBox className={className}>{children}</StyledBox>;

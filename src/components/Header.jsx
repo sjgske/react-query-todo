@@ -1,14 +1,12 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import Container from './Container';
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+import Container from "./Container";
 
-const Header = () => {
+const Header = ({ linkName, url }) => {
   return (
     <StyledHeader>
       <Container>
-        <StyledLink className="header__link" to="/auth">
-          회원가입 / 로그인
-        </StyledLink>
+        <StyledLink to={url}>{linkName}</StyledLink>
       </Container>
     </StyledHeader>
   );
