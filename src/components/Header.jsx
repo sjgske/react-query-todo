@@ -19,6 +19,8 @@ const StyledHeader = styled.header`
   width: 100%;
   padding: 1.2rem 0;
   border-bottom: 1px solid #ddd;
+  z-index: 30;
+  background-color: #fff;
 
   & > div > * {
     font-size: 1.1rem;

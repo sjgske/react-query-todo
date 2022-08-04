@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-const Button = ({ type, width, disabled, children, onClick }) => {
+const Button = ({ type, color, width, disabled, children, onClick }) => {
   return (
-    <StyledButton type={type} width={width} disabled={disabled} onClick={onClick}>
+    <StyledButton type={type} color={color} width={width} disabled={disabled} onClick={onClick}>
       {children}
     </StyledButton>
   );
@@ -15,14 +15,14 @@ const StyledButton = styled.button`
   color: #fff;
   transition: background-color 200ms ease-in;
 
-  ${({ disabled }) =>
+  ${({ disabled, color }) =>
     disabled
       ? `
       background-color: #aaa;
       cursor: not-allowed;
     `
       : `
-      background-color: #191a20;
+      background-color: ${color || "#191a20"};
       cursor: pointer;
     `}
 `;
