@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 import Container from "../components/Container";
 import Button from "../components/Button";
 import Box from "../components/Box";
 import TextBox from "../components/TextBox";
 import Header from "../components/Header";
 import { validateEmail } from "../utils";
+import api from "../api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -30,10 +30,11 @@ const Login = () => {
         email,
         password,
       };
-      const res = await axios.post("http://localhost:8080/users/login", data);
-      alert(res.data.message);
-      localStorage.setItem("token", res.data.token);
-      navigate("/");
+      await api.post("/users/login", data).then((res) => {
+        alert(res.data.message);
+        localStorage.setItem("token", res.data.token);
+        navigate("/");
+      });
     } catch (err) {
       const { response } = err;
       alert(response.data.details);
@@ -74,7 +75,7 @@ const Login = () => {
       </Header>
       <Container>
         <Flexbox>
-          <Box color="#fff">
+          <Box color="#fff" padding="3rem">
             <Form>
               <Heading>로그인</Heading>
               {fieldContent.map((el) => (

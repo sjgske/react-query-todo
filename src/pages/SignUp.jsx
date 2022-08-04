@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 import Container from "../components/Container";
 import Button from "../components/Button";
 import Box from "../components/Box";
 import TextBox from "../components/TextBox";
 import Header from "../components/Header";
 import { validateEmail } from "../utils";
+import api from "../api";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -24,9 +24,10 @@ const SignUp = () => {
         email,
         password,
       };
-      const res = await axios.post("http://localhost:8080/users/create", data);
-      alert(res.data.message);
-      navigate("/auth/login");
+      await api.post("/users/create", data).then((res) => {
+        alert(res.data.message);
+        navigate("/auth/login");
+      });
     } catch (err) {
       const { response } = err;
       alert(response.data.details);
@@ -67,7 +68,7 @@ const SignUp = () => {
       </Header>
       <Container>
         <Flexbox>
-          <Box color="#fff">
+          <Box color="#fff" padding="3rem">
             <Form>
               <Heading>회원가입</Heading>
               {fieldContent.map((el) => (
