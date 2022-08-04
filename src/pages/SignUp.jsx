@@ -9,18 +9,12 @@ import TextBox from "../components/TextBox";
 import Header from "../components/Header";
 import { validateEmail } from "../utils";
 
-const Login = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [disabled, setDisabled] = useState(true);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/");
-    }
-  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,10 +24,9 @@ const Login = () => {
         email,
         password,
       };
-      const res = await axios.post("http://localhost:8080/users/login", data);
+      const res = await axios.post("http://localhost:8080/users/create", data);
       alert(res.data.message);
-      localStorage.setItem("token", res.data.token);
-      navigate("/");
+      navigate("/auth/login");
     } catch (err) {
       const { response } = err;
       alert(response.data.details);
@@ -76,7 +69,7 @@ const Login = () => {
         <Flexbox>
           <Box color="#fff">
             <Form>
-              <Heading>로그인</Heading>
+              <Heading>회원가입</Heading>
               {fieldContent.map((el) => (
                 <Field key={el.type}>
                   <FieldLabel htmlFor={el.type}>{el.label}</FieldLabel>
@@ -93,9 +86,8 @@ const Login = () => {
               ))}
 
               <Button type="submit" width="100%" disabled={disabled} onClick={handleSubmit}>
-                로그인
+                회원가입
               </Button>
-              <SmallLink to="/auth/signup">회원가입</SmallLink>
             </Form>
           </Box>
         </Flexbox>
@@ -103,8 +95,6 @@ const Login = () => {
     </>
   );
 };
-
-export default Login;
 
 const Flexbox = styled.div`
   display: flex;
@@ -133,11 +123,4 @@ const FieldLabel = styled.label``;
 
 const FieldInput = styled.input``;
 
-const SmallLink = styled(Link)`
-  display: block;
-  width: fit-content;
-  margin: 1rem auto 0;
-  font-size: 0.8rem;
-  color: #555;
-  text-decoration: underline;
-`;
+export default SignUp;

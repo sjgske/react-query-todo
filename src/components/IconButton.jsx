@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-const IconButton = ({ color, fontColor, children, size }) => {
+const IconButton = ({ color, fontColor, children, size, onClick }) => {
   return (
-    <StyledIconButton color={color} fontColor={fontColor} size={size}>
+    <StyledIconButton color={color} fontColor={fontColor} size={size} onClick={onClick}>
       {children}
     </StyledIconButton>
   );

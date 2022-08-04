@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
-const Button = ({ type, width, disabled, children }) => {
+const Button = ({ type, width, disabled, children, onClick }) => {
   return (
-    <StyledButton type={type} width={width} disabled={disabled}>
+    <StyledButton type={type} width={width} disabled={disabled} onClick={onClick}>
       {children}
     </StyledButton>
   );

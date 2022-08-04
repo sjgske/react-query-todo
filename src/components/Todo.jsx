@@ -44,10 +44,10 @@ const Todo = () => {
         <Border />
 
         <TodoControl>
-          <TextBox padding="0.8rem">
+          <TextBox padding="0.7rem">
             <TodoAddInput type="text" placeholder="할 일을 입력하세요." />
           </TextBox>
-          <IconButton color="#191a20" fontColor="#fff" size="2.2rem">
+          <IconButton color="#191a20" fontColor="#fff" size="2.4rem">
             <FontAwesomeIcon icon={faPlus} />
           </IconButton>
           {/* TODO: 수정, 삭제 버튼 */}
@@ -62,7 +62,7 @@ export default Todo;
 
 const TodoHeader = styled.h1`
   font-size: 1.6rem;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 `;
 
 const TodoList = styled.ul``;
