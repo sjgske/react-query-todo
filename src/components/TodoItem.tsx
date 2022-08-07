@@ -13,10 +13,19 @@ interface ITodoItem {
   getTodos(): void;
 }
 
-const TodoItem = ({ id, title, content, getTodos }: ITodoItem) => {
+const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
   const [disabled, setDisabled] = useState(true);
-  const [titleValue, setTitleValue] = useState(title);
-  const [contentValue, setContentValue] = useState(content);
+  const [form, setForm] = useState({ title: t, content: c });
+
+  const { title, content } = form;
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
 
   const handleUpdateButton = () => {
     setDisabled(false);
@@ -28,11 +37,8 @@ const TodoItem = ({ id, title, content, getTodos }: ITodoItem) => {
 
   const updateTodo = async (e: React.MouseEvent) => {
     e.preventDefault();
-
     try {
-      const data = { title: titleValue, content: contentValue };
-      await api.put(`/todos/${id}`, data);
-      alert("수정되었습니다.");
+      await api.put(`/todos/${id}`, form);
       getTodos();
       setDisabled(true);
     } catch (err: any) {
@@ -42,10 +48,8 @@ const TodoItem = ({ id, title, content, getTodos }: ITodoItem) => {
 
   const deleteTodo = async (e: React.MouseEvent) => {
     e.preventDefault();
-
     try {
       await api.delete(`/todos/${id}`);
-      alert("삭제되었습니다.");
       getTodos();
     } catch (err: any) {
       alert(err.response.data.details);
@@ -59,17 +63,14 @@ const TodoItem = ({ id, title, content, getTodos }: ITodoItem) => {
           <TextBox padding="0.7rem">
             <TodoInput
               type="text"
-              value={titleValue}
-              onChange={(e) => setTitleValue(e.target.value)}
+              name="title"
+              value={title}
+              onChange={onChange}
               disabled={disabled}
             />
           </TextBox>
           <TextBox padding="0.7rem">
-            <TodoTextarea
-              value={contentValue}
-              onChange={(e) => setContentValue(e.target.value)}
-              disabled={disabled}
-            />
+            <TodoTextarea name="content" value={content} onChange={onChange} disabled={disabled} />
           </TextBox>
         </TextGroup>
         {disabled ? (

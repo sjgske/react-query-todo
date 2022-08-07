@@ -11,21 +11,29 @@ const Todo = () => {
   const [todos, setTodos] = useState([]);
 
   const getTodos = async () => {
-    await api.get("/todos").then((res) => setTodos(res.data.data));
+    await api.get("/todos").then((res) => {
+      const sorted = res.data.data.reverse();
+      setTodos(sorted);
+    });
   };
 
   const createTodo = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    type Form = {
+      title: HTMLInputElement;
+      content: HTMLTextAreaElement;
+    };
+
     try {
-      const { title, content } = e.target;
+      const target = e.target as HTMLFormElement;
+      const { title, content }: Form = target;
       if (!title.value || !content.value) return;
       const data = {
         title: title.value,
         content: content.value,
       };
       await api.post("/todos", data);
-      alert("추가되었습니다.");
       getTodos();
     } catch (err: any) {
       alert(err.response.data.details);
@@ -56,7 +64,7 @@ const Todo = () => {
       </Form>
 
       <TodoList>
-        {todos.length &&
+        {todos.length > 0 &&
           todos.map(({ id, title, content }) => (
             <TodoItem key={id} id={id} title={title} content={content} getTodos={getTodos} />
           ))}
