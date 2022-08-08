@@ -1,10 +1,13 @@
 import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import Button from "./Button";
 import Box from "./Box";
 import TextBox from "./TextBox";
 import api from "../api";
 import { useState } from "react";
+import { useParams } from "react-router-dom";
 
 interface ITodoItem {
   id: string;
@@ -14,8 +17,11 @@ interface ITodoItem {
 }
 
 const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
+  const [show, setShow] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [form, setForm] = useState({ title: t, content: c });
+
+  const { params } = useParams();
 
   const { title, content } = form;
 
@@ -58,49 +64,64 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
 
   return (
     <StyledTodoItem key={id}>
-      <Box padding="2rem">
-        <TextGroup>
-          <TextBox padding="0.7rem">
-            <TodoInput
-              type="text"
-              name="title"
-              value={title}
-              onChange={onChange}
-              disabled={disabled}
-            />
-          </TextBox>
-          <TextBox padding="0.7rem">
-            <TodoTextarea name="content" value={content} onChange={onChange} disabled={disabled} />
-          </TextBox>
-        </TextGroup>
-        {disabled ? (
-          <ButtonGroup>
-            <Button width="100%" onClick={handleUpdateButton}>
-              수정
-            </Button>
-            <Button width="100%" onClick={deleteTodo}>
-              삭제
-            </Button>
-          </ButtonGroup>
-        ) : (
-          <ButtonGroup>
-            <Button color="#1e90ff" width="100%" onClick={updateTodo}>
-              수정 완료
-            </Button>
-            <Button color="#aaa" width="100%" onClick={handleCancleButton}>
-              취소
-            </Button>
-          </ButtonGroup>
-        )}
-      </Box>
+      <Wrapper onClick={() => setShow(!show)}>
+        <Box padding="1rem">
+          <TodoTitle>{title}</TodoTitle>
+          <FontAwesomeIcon icon={faAngleDown} className={show ? "hidden" : ""} />
+          <Wrapper className={!show ? "hidden" : ""} style={{ marginTop: "1rem" }}>
+            <TextGroup>
+              <TextBox padding="0.7rem">
+                <TodoInput
+                  type="text"
+                  name="title"
+                  value={title}
+                  onChange={onChange}
+                  disabled={disabled}
+                />
+              </TextBox>
+              <TextBox padding="0.7rem">
+                <TodoTextarea
+                  name="content"
+                  value={content}
+                  onChange={onChange}
+                  disabled={disabled}
+                />
+              </TextBox>
+            </TextGroup>
+            {disabled ? (
+              <ButtonGroup>
+                <Button width="100%" onClick={handleUpdateButton}>
+                  수정
+                </Button>
+                <Button width="100%" onClick={deleteTodo}>
+                  삭제
+                </Button>
+              </ButtonGroup>
+            ) : (
+              <ButtonGroup>
+                <Button color="#1e90ff" width="100%" onClick={updateTodo}>
+                  수정 완료
+                </Button>
+                <Button color="#aaa" width="100%" onClick={handleCancleButton}>
+                  취소
+                </Button>
+              </ButtonGroup>
+            )}
+          </Wrapper>
+        </Box>
+      </Wrapper>
     </StyledTodoItem>
   );
 };
 
 const StyledTodoItem = styled.li`
   position: relative;
-  margin-top: 3rem;
+  margin-top: 1rem;
 `;
+
+const Wrapper = styled.div``;
+
+const TodoTitle = styled.div``;
 
 const TodoInput = styled.input``;
 

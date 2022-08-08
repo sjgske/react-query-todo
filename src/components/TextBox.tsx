@@ -4,7 +4,7 @@ import styled from "styled-components";
 interface ITextBox {
   width?: string;
   padding: string;
-  children: JSX.Element;
+  children: string | JSX.Element;
 }
 
 const TextBox = ({ width, padding, children }: ITextBox) => {

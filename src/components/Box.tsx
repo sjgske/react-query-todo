@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface IBox {
   padding: string;
-  children: JSX.Element | JSX.Element[];
+  children: string | JSX.Element | JSX.Element[];
 }
 
 const Box = ({ padding, children }: IBox) => {
