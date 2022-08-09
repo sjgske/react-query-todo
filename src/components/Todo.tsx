@@ -41,29 +41,30 @@ const Todo = () => {
 
   return (
     <Container>
-      <Form onSubmit={createTodo}>
-        <Box padding="2.2rem">
-          <TodoHeader>Todo List</TodoHeader>
-          <TextGroup>
-            <TextBox padding="0.7rem" width="15rem">
-              <TodoInput type="text" name="title" placeholder="제목을 입력하세요." />
-            </TextBox>
-            <TextBox padding="0.7rem" width="15rem">
-              <TodoTextarea name="content" placeholder="내용을 입력하세요." />
-            </TextBox>
-          </TextGroup>
-          <Button color="#191a20" width="100%">
-            추가
-          </Button>
-        </Box>
-      </Form>
-
-      <TodoList>
-        {todos.length > 0 &&
-          todos.map(({ id, title, content }) => (
-            <TodoItem key={id} id={id} title={title} content={content} getTodos={getTodos} />
-          ))}
-      </TodoList>
+      <Wrapper>
+        <Form onSubmit={createTodo}>
+          <Box padding="2.2rem">
+            <TodoHeader>Todo List</TodoHeader>
+            <TextGroup>
+              <TextBox padding="0.7rem" width="15rem">
+                <TodoInput type="text" name="title" placeholder="제목을 입력하세요." />
+              </TextBox>
+              <TextBox padding="0.7rem" width="15rem">
+                <TodoTextarea name="content" placeholder="내용을 입력하세요." />
+              </TextBox>
+            </TextGroup>
+            <Button color="#191a20" width="100%">
+              추가
+            </Button>
+          </Box>
+        </Form>
+        <TodoList>
+          {todos.length > 0 &&
+            todos.map(({ id, title, content }) => (
+              <TodoItem key={id} id={id} title={title} content={content} getTodos={getTodos} />
+            ))}
+        </TodoList>
+      </Wrapper>
     </Container>
   );
 };
@@ -73,9 +74,14 @@ const TodoHeader = styled.h1`
   margin-bottom: 2.4rem;
 `;
 
-const Form = styled.form`
-  margin-top: 5rem;
+const Wrapper = styled.div`
+  position: absolute;
+  top: 10rem;
+  left: 50%;
+  transform: translateX(-50%);
 `;
+
+const Form = styled.form``;
 
 const TodoList = styled.ul`
   margin-bottom: 5rem;

@@ -65,7 +65,7 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
   return (
     <StyledTodoItem key={id}>
       <Wrapper onClick={() => setShow(!show)}>
-        <Box padding="1rem">
+        <Box padding="1.4rem">
           <TodoTitle>{title}</TodoTitle>
           <FontAwesomeIcon icon={faAngleDown} className={show ? "hidden" : ""} />
           <Wrapper className={!show ? "hidden" : ""} style={{ marginTop: "1rem" }}>

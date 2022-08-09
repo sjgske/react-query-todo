@@ -73,7 +73,7 @@ const Login = () => {
         <Link to="/">Home</Link>
       </Header>
       <Container>
-        <StyledBox padding="3rem">
+        <Box padding="3rem">
           <Form>
             <Heading>로그인</Heading>
             {fieldContent.map((el) => (
@@ -96,7 +96,7 @@ const Login = () => {
             </Button>
             <SmallLink to="/auth/signup">회원가입</SmallLink>
           </Form>
-        </StyledBox>
+        </Box>
       </Container>
     </>
   );
@@ -107,13 +107,6 @@ const Form = styled.form``;
 const Heading = styled.h1`
   font-size: 1.6rem;
   margin-bottom: 3rem;
-`;
-
-const StyledBox = styled(Box)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 `;
 
 const Field = styled.div`
