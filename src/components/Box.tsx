@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import theme from "../styles/theme";
 
 interface IBox {
   padding: string;
@@ -15,7 +16,7 @@ const StyledBox = styled.div<IBox>`
   flex-direction: column;
   padding: ${({ padding }) => padding};
   border-radius: 8px;
-  background-color: #fff;
+  background-color: ${theme.white};
   box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 `;
 

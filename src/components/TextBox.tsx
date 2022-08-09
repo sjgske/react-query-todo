@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import theme from "../styles/theme";
 
 interface ITextBox {
   width?: string;
@@ -19,7 +20,7 @@ const StyledTextBox = styled.div<ITextBox>`
   width: ${({ width }) => width};
   padding: ${({ padding }) => padding};
   border-radius: 6px;
-  background-color: #f0f0f0;
+  background-color: ${theme.lightGrey};
 `;
 
 export default TextBox;

@@ -8,6 +8,7 @@ import TextBox from "../components/TextBox";
 import Header from "../components/Header";
 import { validateEmail } from "../utils";
 import api from "../api";
+import theme from "../styles/theme";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -122,14 +123,16 @@ const Field = styled.div`
 
 const FieldLabel = styled.label``;
 
-const FieldInput = styled.input``;
+const FieldInput = styled.input`
+  width: 100%;
+`;
 
 const SmallLink = styled(Link)`
   display: block;
   width: fit-content;
   margin: 1rem auto 0;
   font-size: 0.8rem;
-  color: #555;
+  color: ${theme.deepGrey};
   text-decoration: underline;
 `;
 

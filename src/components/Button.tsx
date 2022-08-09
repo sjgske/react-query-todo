@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import theme from "../styles/theme";
 
 interface IButton {
   color?: string;
@@ -21,17 +22,17 @@ const StyledButton = styled.button<IButton>`
   width: ${({ width }) => width};
   padding: 0.9rem;
   border-radius: 100px;
-  color: #fff;
+  color: ${theme.white};
   transition: background-color 200ms ease-in;
 
   ${({ disabled, color }) =>
     disabled
       ? `
-      background-color: #aaa;
+      background-color: ${theme.grey};
       cursor: not-allowed;
     `
       : `
-      background-color: ${color || "#191a20"};
+      background-color: ${color || theme.black};
       cursor: pointer;
     `}
 `;

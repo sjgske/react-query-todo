@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import theme from "./theme";
 
 const GlobalStyles = createGlobalStyle`
   * {
@@ -9,8 +10,8 @@ const GlobalStyles = createGlobalStyle`
 
   html {
     height: 100%;
-    font-family: "Noto Sans KR", sans-serif;
-    color: #191a20;
+    font-family: "NotoSans", sans-serif;
+    color: ${theme.black};
   }
 
   body {
@@ -20,6 +21,7 @@ const GlobalStyles = createGlobalStyle`
     justify-content: center;
     align-items: center;
     height: 100%;
+    font-family: "NotoSans", sans-serif;
   }
 
   a {
@@ -38,7 +40,7 @@ const GlobalStyles = createGlobalStyle`
   input,
   textarea,
   select {
-    font-family: "Noto Sans KR", sans-serif;
+    font-family: "NotoSans", sans-serif;
     border: none;
     outline: none;
     background-color: transparent;

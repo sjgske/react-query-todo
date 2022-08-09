@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Container from "./Container";
+import theme from "../styles/theme";
 
 interface IHeader {
   children: JSX.Element | JSX.Element[];
@@ -23,9 +24,9 @@ const StyledHeader = styled.header`
   left: 0;
   width: 100%;
   padding: 1.2rem 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid ${theme.borderGrey};
   z-index: 30;
-  background-color: #fff;
+  background-color: ${theme.white};
 
   & a {
     font-size: 1.1rem;

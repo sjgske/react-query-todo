@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
@@ -6,8 +7,7 @@ import Button from "./Button";
 import Box from "./Box";
 import TextBox from "./TextBox";
 import api from "../api";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import theme from "../styles/theme";
 
 interface ITodoItem {
   id: string;
@@ -37,7 +37,7 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
     setDisabled(false);
   };
 
-  const handleCancleButton = () => {
+  const handleCancelButton = () => {
     setDisabled(true);
   };
 
@@ -63,53 +63,51 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
   };
 
   return (
-    <StyledTodoItem key={id}>
-      <Wrapper onClick={() => setShow(!show)}>
-        <Box padding="1.4rem">
-          <TodoTitle>{title}</TodoTitle>
-          <FontAwesomeIcon icon={faAngleDown} className={show ? "hidden" : ""} />
-          <Wrapper className={!show ? "hidden" : ""} style={{ marginTop: "1rem" }}>
-            <TextGroup>
-              <TextBox padding="0.7rem">
-                <TodoInput
-                  type="text"
-                  name="title"
-                  value={title}
-                  onChange={onChange}
-                  disabled={disabled}
-                />
-              </TextBox>
-              <TextBox padding="0.7rem">
-                <TodoTextarea
-                  name="content"
-                  value={content}
-                  onChange={onChange}
-                  disabled={disabled}
-                />
-              </TextBox>
-            </TextGroup>
-            {disabled ? (
-              <ButtonGroup>
-                <Button width="100%" onClick={handleUpdateButton}>
-                  수정
-                </Button>
-                <Button width="100%" onClick={deleteTodo}>
-                  삭제
-                </Button>
-              </ButtonGroup>
-            ) : (
-              <ButtonGroup>
-                <Button color="#1e90ff" width="100%" onClick={updateTodo}>
-                  수정 완료
-                </Button>
-                <Button color="#aaa" width="100%" onClick={handleCancleButton}>
-                  취소
-                </Button>
-              </ButtonGroup>
-            )}
-          </Wrapper>
-        </Box>
-      </Wrapper>
+    <StyledTodoItem key={id} onClick={() => setShow(!show)}>
+      <Box padding="1.4rem">
+        <TodoTitle>{title}</TodoTitle>
+        <FontAwesomeIcon icon={faAngleDown} className={show ? "hidden" : ""} />
+        <Wrapper className={!show ? "hidden" : ""}>
+          <TextGroup>
+            <TextBox padding="0.7rem">
+              <TodoInput
+                type="text"
+                name="title"
+                value={title}
+                onChange={onChange}
+                disabled={disabled}
+              />
+            </TextBox>
+            <TextBox padding="0.7rem">
+              <TodoTextarea
+                name="content"
+                value={content}
+                onChange={onChange}
+                disabled={disabled}
+              />
+            </TextBox>
+          </TextGroup>
+          {disabled ? (
+            <ButtonGroup>
+              <Button width="100%" onClick={handleUpdateButton}>
+                수정
+              </Button>
+              <Button width="100%" onClick={deleteTodo}>
+                삭제
+              </Button>
+            </ButtonGroup>
+          ) : (
+            <ButtonGroup>
+              <Button color={theme.blue} width="100%" onClick={updateTodo}>
+                수정 완료
+              </Button>
+              <Button color={theme.grey} width="100%" onClick={handleCancelButton}>
+                취소
+              </Button>
+            </ButtonGroup>
+          )}
+        </Wrapper>
+      </Box>
     </StyledTodoItem>
   );
 };
@@ -119,7 +117,9 @@ const StyledTodoItem = styled.li`
   margin-top: 1rem;
 `;
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  margin-top: 1rem;
+`;
 
 const TodoTitle = styled.div``;
 

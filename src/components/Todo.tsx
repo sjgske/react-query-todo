@@ -6,6 +6,7 @@ import Box from "./Box";
 import TextBox from "./TextBox";
 import TodoItem from "./TodoItem";
 import api from "../api";
+import theme from "../styles/theme";
 
 const Todo = () => {
   const [todos, setTodos] = useState([]);
@@ -42,7 +43,7 @@ const Todo = () => {
   return (
     <Container>
       <Wrapper>
-        <Form onSubmit={createTodo}>
+        <TodoForm onSubmit={createTodo}>
           <Box padding="2.2rem">
             <TodoHeader>Todo List</TodoHeader>
             <TextGroup>
@@ -53,13 +54,14 @@ const Todo = () => {
                 <TodoTextarea name="content" placeholder="내용을 입력하세요." />
               </TextBox>
             </TextGroup>
-            <Button color="#191a20" width="100%">
+            <Button color={theme.black} width="100%">
               추가
             </Button>
           </Box>
-        </Form>
+        </TodoForm>
         <TodoList>
-          {todos.length > 0 &&
+          {Array.isArray(todos) &&
+            todos.length > 0 &&
             todos.map(({ id, title, content }) => (
               <TodoItem key={id} id={id} title={title} content={content} getTodos={getTodos} />
             ))}
@@ -81,7 +83,7 @@ const Wrapper = styled.div`
   transform: translateX(-50%);
 `;
 
-const Form = styled.form``;
+const TodoForm = styled.form``;
 
 const TodoList = styled.ul`
   margin-bottom: 5rem;
