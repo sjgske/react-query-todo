@@ -20,20 +20,15 @@ const Todo = () => {
   const createTodo = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    type Form = {
-      title: HTMLInputElement;
-      content: HTMLTextAreaElement;
-    };
-
     try {
-      const target = e.target as HTMLFormElement;
-      const { title, content }: Form = target;
-      if (!title.value || !content.value) return;
-      const data = {
-        title: title.value,
-        content: content.value,
+      const target = e.target as HTMLFormElement & {
+        title: { value: string };
+        content: { value: string };
       };
-      await api.post("/todos", data);
+      const title = target.title.value;
+      const content = target.content.value;
+      if (!title || !content) return;
+      await api.post("/todos", { title, content });
       getTodos();
     } catch (err: any) {
       alert(err.response.data.details);
