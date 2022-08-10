@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { createBrowserHistory } from "history";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faX } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
 import Box from "./Box";
 import TextBox from "./TextBox";
-import api from "../api";
+import api from "../api/api";
 import theme from "../styles/theme";
 
 interface ITodoItem {
@@ -17,13 +18,25 @@ interface ITodoItem {
 }
 
 const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
-  const [show, setShow] = useState(false);
-  const [disabled, setDisabled] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(true);
   const [form, setForm] = useState({ title: t, content: c });
 
-  const { params } = useParams();
+  const navigate = useNavigate();
+  const history = createBrowserHistory();
 
   const { title, content } = form;
+
+  useEffect(() => {
+    const back = () => {
+      history.listen(({ action }) => {
+        if (action === "POP" && showModal) {
+          setShowModal(false);
+        }
+      });
+    };
+    back();
+  }, [history, showModal]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -34,11 +47,11 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
   };
 
   const handleUpdateButton = () => {
-    setDisabled(false);
+    setDisabledButton(false);
   };
 
   const handleCancelButton = () => {
-    setDisabled(true);
+    setDisabledButton(true);
   };
 
   const updateTodo = async (e: React.MouseEvent) => {
@@ -46,7 +59,7 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
     try {
       await api.put(`/todos/${id}`, form);
       getTodos();
-      setDisabled(true);
+      setDisabledButton(true);
     } catch (err: any) {
       alert(err.response.data.details);
     }
@@ -62,32 +75,52 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
     }
   };
 
+  const openModal = () => {
+    setShowModal(true);
+    navigate(`/todo/${id}`);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    navigate("/");
+  };
+
   return (
-    <StyledTodoItem key={id} onClick={() => setShow(!show)}>
-      <Box padding="1.4rem">
-        <TodoTitle>{title}</TodoTitle>
-        <FontAwesomeIcon icon={faAngleDown} className={show ? "hidden" : ""} />
-        <Wrapper className={!show ? "hidden" : ""}>
+    <StyledTodoItem key={id}>
+      <Wrapper onClick={openModal}>
+        <Box padding="1.4rem">
+          <TodoTitle>{title}</TodoTitle>
+        </Box>
+      </Wrapper>
+
+      <Wrapper className={!showModal ? "hidden" : ""}>
+        <Modal padding="2.2rem">
+          <TodoHeader>상세</TodoHeader>
+          <FontAwesomeIcon
+            icon={faX}
+            style={{ position: "absolute", top: "2rem", right: "2rem" }}
+            onClick={closeModal}
+          />
           <TextGroup>
-            <TextBox padding="0.7rem">
+            <TextBox padding="0.7rem" width="15rem">
               <TodoInput
                 type="text"
                 name="title"
                 value={title}
                 onChange={onChange}
-                disabled={disabled}
+                disabled={disabledButton}
               />
             </TextBox>
-            <TextBox padding="0.7rem">
+            <TextBox padding="0.7rem" width="15rem">
               <TodoTextarea
                 name="content"
                 value={content}
                 onChange={onChange}
-                disabled={disabled}
+                disabled={disabledButton}
               />
             </TextBox>
           </TextGroup>
-          {disabled ? (
+          {disabledButton ? (
             <ButtonGroup>
               <Button width="100%" onClick={handleUpdateButton}>
                 수정
@@ -106,20 +139,18 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
               </Button>
             </ButtonGroup>
           )}
-        </Wrapper>
-      </Box>
+        </Modal>
+        <Background />
+      </Wrapper>
     </StyledTodoItem>
   );
 };
 
 const StyledTodoItem = styled.li`
-  position: relative;
   margin-top: 1rem;
 `;
 
-const Wrapper = styled.div`
-  margin-top: 1rem;
-`;
+const Wrapper = styled.div``;
 
 const TodoTitle = styled.div``;
 
@@ -136,6 +167,29 @@ const TextGroup = styled.div`
   }
   margin-bottom: 1.6rem;
   font-size: 0.9rem;
+`;
+
+const Modal = styled(Box)`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 50;
+`;
+
+const Background = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 40;
+  background-color: rgba(26, 26, 26, 0.5);
+`;
+
+const TodoHeader = styled.h1`
+  font-size: 1.6rem;
+  margin-bottom: 2.4rem;
 `;
 
 const ButtonGroup = styled.div`

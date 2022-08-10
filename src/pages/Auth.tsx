@@ -20,7 +20,7 @@ const Auth = () => {
   const isLoginForm = formType === "login";
 
   useEffect(() => {
-    localStorage.getItem("token") && navigate("/");
+    localStorage.getItem("token") && navigate("/", { replace: true });
   });
 
   useEffect(() => {

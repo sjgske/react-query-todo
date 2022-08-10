@@ -9,7 +9,6 @@ const GlobalStyles = createGlobalStyle`
   }
 
   html {
-    height: 100%;
     font-family: "Noto Sans KR", sans-serif;
     color: ${theme.black};
   }
@@ -22,6 +21,7 @@ const GlobalStyles = createGlobalStyle`
     align-items: center;
     height: 100%;
     font-family: "Noto Sans KR", sans-serif;
+    padding-top: 4rem;
   }
 
   a {

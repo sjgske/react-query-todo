@@ -5,7 +5,7 @@ import Button from "./Button";
 import Box from "./Box";
 import TextBox from "./TextBox";
 import TodoItem from "./TodoItem";
-import api from "../api";
+import api from "../api/api";
 import theme from "../styles/theme";
 
 const Todo = () => {
@@ -77,10 +77,7 @@ const TodoHeader = styled.h1`
 `;
 
 const Wrapper = styled.div`
-  position: absolute;
-  top: 10rem;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-top: 3rem;
 `;
 
 const TodoForm = styled.form``;

@@ -5,10 +5,15 @@ import theme from "../styles/theme";
 interface IBox {
   padding: string;
   children: string | JSX.Element | JSX.Element[];
+  className?: string;
 }
 
-const Box = ({ padding, children }: IBox) => {
-  return <StyledBox padding={padding}>{children}</StyledBox>;
+const Box = ({ padding, children, className }: IBox) => {
+  return (
+    <StyledBox className={className} padding={padding}>
+      {children}
+    </StyledBox>
+  );
 };
 
 const StyledBox = styled.div<IBox>`
