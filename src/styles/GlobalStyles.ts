@@ -10,7 +10,7 @@ const GlobalStyles = createGlobalStyle`
 
   html {
     height: 100%;
-    font-family: "NotoSans", sans-serif;
+    font-family: "Noto Sans KR", sans-serif;
     color: ${theme.black};
   }
 
@@ -21,7 +21,7 @@ const GlobalStyles = createGlobalStyle`
     justify-content: center;
     align-items: center;
     height: 100%;
-    font-family: "NotoSans", sans-serif;
+    font-family: "Noto Sans KR", sans-serif;
   }
 
   a {
@@ -40,7 +40,7 @@ const GlobalStyles = createGlobalStyle`
   input,
   textarea,
   select {
-    font-family: "NotoSans", sans-serif;
+    font-family: "Noto Sans KR", sans-serif;
     border: none;
     outline: none;
     background-color: transparent;

@@ -1,24 +1,24 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
+import { ThemeProvider } from "styled-components";
+import Auth from "./pages/Auth";
 import Home from "./pages/Home";
-import SignUp from "./pages/SignUp";
-import GlobalFonts from "./styles/GlobalFonts";
 import GlobalStyles from "./styles/GlobalStyles";
+import theme from "./styles/theme";
 
 function App() {
   return (
-    <BrowserRouter>
-      <GlobalFonts />
+    <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <Routes>
-        <Route path="/" element={<Home />}>
-          {/* <Route path="/todos/:id" element={<ToDoDetail />} /> */}
-        </Route>
-        <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/signup" element={<SignUp />} />
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />}>
+            {/* <Route path="/todos/:id" element={<ToDoDetail />} /> */}
+          </Route>
+          <Route path="/auth" element={<Auth />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
