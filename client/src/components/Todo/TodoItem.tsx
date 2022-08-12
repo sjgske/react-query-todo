@@ -4,11 +4,11 @@ import { createBrowserHistory } from "history";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
-import Button from "./Button";
-import Box from "./Box";
-import TextBox from "./TextBox";
-import api from "../api/api";
-import theme from "../styles/theme";
+import Button from "../common/Button";
+import Box from "../common/Box";
+import TextBox from "../common/TextBox";
+import theme from "../../styles/theme";
+import TodoApi from "../../api/todo";
 
 interface ITodoItem {
   id: string;
@@ -57,7 +57,7 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
   const updateTodo = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      await api.put(`/todos/${id}`, form);
+      await TodoApi.update(form, id);
       getTodos();
       setDisabledButton(true);
     } catch (err: any) {
@@ -68,7 +68,7 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
   const deleteTodo = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      await api.delete(`/todos/${id}`);
+      await TodoApi.delete(id);
       getTodos();
     } catch (err: any) {
       alert(err.response.data.details);

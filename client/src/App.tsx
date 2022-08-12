@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import Auth from "./pages/Auth";
 import Home from "./pages/Home";
+import Header from "./components/common/Header";
 import GlobalStyles from "./styles/GlobalStyles";
 import theme from "./styles/theme";
 
@@ -11,6 +12,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <GlobalStyles />
       <BrowserRouter>
+        <Header />
         <Routes>
           <Route path="/" element={<Home />}>
             <Route path="/todo/:id" element={<Home />} />

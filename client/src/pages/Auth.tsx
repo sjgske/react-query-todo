@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { setToken, isValid } from "../utils";
-import Container from "../components/Container";
-import Button from "../components/Button";
-import Box from "../components/Box";
-import TextBox from "../components/TextBox";
-import Header from "../components/Header";
-import theme from "../styles/theme";
+import Container from "../components/common/Container";
+import Button from "../components/common/Button";
+import Box from "../components/common/Box";
+import TextBox from "../components/common/TextBox";
 import AuthApi from "../api/auth";
+import { setToken, isValid } from "../utils";
+import theme from "../styles/theme";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +19,9 @@ const Auth = () => {
   const isLoginForm = formType === "login";
 
   useEffect(() => {
-    localStorage.getItem("token") && navigate("/", { replace: true });
+    if (localStorage.getItem("token")) {
+      navigate("/", { replace: true });
+    }
   });
 
   useEffect(() => {
@@ -69,41 +70,57 @@ const Auth = () => {
 
   return (
     <>
-      <Header>
-        <Link to="/">Home</Link>
-      </Header>
       <Container>
-        <Box padding="3rem">
-          <Form>
-            <Heading>{isLoginForm ? "로그인" : "회원가입"}</Heading>
-            {fieldContent.map((el) => (
-              <Field key={el.type}>
-                <FieldLabel>
-                  {el.label}
-                  <TextBox width="17rem" padding="0.9rem">
-                    <FieldInput
-                      type={el.type}
-                      placeholder={el.placeholder}
-                      value={el.value}
-                      onChange={el.onChange}
-                    />
-                  </TextBox>
-                </FieldLabel>
-              </Field>
-            ))}
-
-            <Button width="100%" disabled={disabledButton} onClick={handleSubmit}>
-              {isLoginForm ? "로그인" : "회원가입"}
-            </Button>
-            {isLoginForm && <SmallLink onClick={() => setFormType("signup")}>회원가입</SmallLink>}
-          </Form>
-        </Box>
+        <Wrapper>
+          <AuthForm>
+            <Box padding="3rem">
+              <Heading>{isLoginForm ? "로그인" : "회원가입"}</Heading>
+              <>
+                {fieldContent.map(({ label, type, placeholder, value, onChange }) => (
+                  <Field key={type}>
+                    <FieldLabel>
+                      {label}
+                      <TextBox width="17rem" padding="0.9rem">
+                        <FieldInput
+                          type={type}
+                          placeholder={placeholder}
+                          value={value}
+                          onChange={onChange}
+                        />
+                      </TextBox>
+                    </FieldLabel>
+                  </Field>
+                ))}
+              </>
+              <Button width="100%" disabled={disabledButton} onClick={handleSubmit}>
+                {isLoginForm ? "로그인" : "회원가입"}
+              </Button>
+              <>
+                {isLoginForm && (
+                  <SmallLink onClick={() => setFormType("signup")}>회원가입</SmallLink>
+                )}
+              </>
+            </Box>
+          </AuthForm>
+        </Wrapper>
       </Container>
     </>
   );
 };
 
-const Form = styled.form``;
+const Wrapper = styled.div`
+  padding-top: 4rem;
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 4rem);
+`;
+
+const AuthForm = styled.form`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
 
 const Heading = styled.h1`
   font-size: 1.6rem;
@@ -111,9 +128,6 @@ const Heading = styled.h1`
 `;
 
 const Field = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
   margin-bottom: 2.2rem;
 
   &:nth-child(3) {
@@ -121,7 +135,11 @@ const Field = styled.div`
   }
 `;
 
-const FieldLabel = styled.label``;
+const FieldLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+`;
 
 const FieldInput = styled.input`
   width: 100%;

@@ -1,16 +1,28 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Container from "./Container";
-import theme from "../styles/theme";
+import theme from "../../styles/theme";
 
-interface IHeader {
-  children: JSX.Element | JSX.Element[];
-}
+const Header = () => {
+  const navigate = useNavigate();
 
-const Header = ({ children }: IHeader) => {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/auth");
+  };
+
   return (
     <StyledHeader>
-      <Container>{children}</Container>
+      <Container>
+        {localStorage.getItem("token") ? (
+          <Link to="/auth" onClick={handleLogout}>
+            로그아웃
+          </Link>
+        ) : (
+          <Link to="/">Home</Link>
+        )}
+      </Container>
     </StyledHeader>
   );
 };
