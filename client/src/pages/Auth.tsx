@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 import styled from "styled-components";
 import Container from "../components/common/Container";
 import Button from "../components/common/Button";
@@ -19,12 +20,6 @@ const Auth = () => {
   const isLoginForm = formType === "login";
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/", { replace: true });
-    }
-  });
-
-  useEffect(() => {
     setDisabledButton(!isValid(email, password));
   }, [email, password]);
 
@@ -37,16 +32,20 @@ const Auth = () => {
         setToken(data.token);
         alert(data.message);
         navigate("/");
-      } catch (err: any) {
-        alert(err.response.data.details);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          alert(err.message);
+        }
       }
     } else {
       try {
         const data = await AuthApi.signup({ email, password });
         alert(data.message);
         setFormType("login");
-      } catch (err: any) {
-        alert(err.response.data.details);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          alert(err.message);
+        }
       }
     }
   };

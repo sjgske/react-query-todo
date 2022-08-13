@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 import styled from "styled-components";
 import Container from "../components/common/Container";
 import TodoForm from "../components/Todo/TodoForm";
@@ -8,35 +8,15 @@ import TodoApi from "../api/todo";
 
 const Todo = () => {
   const [todos, setTodos] = useState([]);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      alert("로그인 해주세요.");
-      navigate("/auth");
-    }
-  });
 
   const getTodos = async () => {
-    const data = await TodoApi.get();
-    setTodos(data);
-  };
-
-  const addTodo = async (e: React.FormEvent) => {
-    e.preventDefault();
-
     try {
-      const target = e.target as HTMLFormElement & {
-        title: { value: string };
-        content: { value: string };
-      };
-      const title = target.title.value;
-      const content = target.content.value;
-      if (!title || !content) return;
-      await TodoApi.add({ title, content });
-      getTodos();
-    } catch (err: any) {
-      alert(err.response.data.details);
+      const data = await TodoApi.get();
+      setTodos(data);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        alert(err.message);
+      }
     }
   };
 
@@ -47,7 +27,7 @@ const Todo = () => {
   return (
     <Container>
       <Wrapper>
-        <TodoForm addTodo={addTodo} />
+        <TodoForm getTodos={getTodos} />
         <TodoList>
           {Array.isArray(todos) &&
             todos.length > 0 &&

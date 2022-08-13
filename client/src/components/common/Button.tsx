@@ -6,7 +6,7 @@ interface IButton {
   color?: string;
   width?: string;
   disabled?: boolean;
-  children: JSX.Element | string;
+  children: React.ReactNode;
   onClick?(e?: React.MouseEvent): void;
 }
 

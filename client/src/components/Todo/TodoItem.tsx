@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createBrowserHistory } from "history";
+import { useSearchParams } from "react-router-dom";
+import { AxiosError } from "axios";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -18,25 +18,20 @@ interface ITodoItem {
 }
 
 const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
-  const [showModal, setShowModal] = useState(false);
-  const [disabledButton, setDisabledButton] = useState(true);
   const [form, setForm] = useState({ title: t, content: c });
-
-  const navigate = useNavigate();
-  const history = createBrowserHistory();
+  const [show, setShow] = useState(false);
+  const [disabledButton, setDisabledButton] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { title, content } = form;
 
   useEffect(() => {
-    const back = () => {
-      history.listen(({ action }) => {
-        if (action === "POP" && showModal) {
-          setShowModal(false);
-        }
-      });
-    };
-    back();
-  }, [history, showModal]);
+    if (searchParams.get("id") === id) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  }, [id, searchParams]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -60,8 +55,10 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
       await TodoApi.update(form, id);
       getTodos();
       setDisabledButton(true);
-    } catch (err: any) {
-      alert(err.response.data.details);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        alert(err.message);
+      }
     }
   };
 
@@ -70,36 +67,41 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
     try {
       await TodoApi.delete(id);
       getTodos();
-    } catch (err: any) {
-      alert(err.response.data.details);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        alert(err.message);
+      }
     }
   };
 
-  const openModal = () => {
-    setShowModal(true);
-    navigate(`/todo/${id}`);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    navigate("/");
+  const handleTodoDetail = () => {
+    if (show) {
+      setShow(false);
+      setSearchParams({});
+      return;
+    }
+    setShow(true);
+    setSearchParams({
+      ...searchParams,
+      id,
+    });
   };
 
   return (
     <StyledTodoItem key={id}>
-      <Wrapper onClick={openModal}>
+      <Wrapper onClick={handleTodoDetail}>
         <Box padding="1.4rem">
           <TodoTitle>{title}</TodoTitle>
         </Box>
       </Wrapper>
 
-      <Wrapper className={!showModal ? "hidden" : ""}>
-        <Modal padding="2.2rem">
+      <Wrapper className={!show ? "hidden" : ""}>
+        <TodoDetail padding="2.2rem">
           <TodoHeader>상세</TodoHeader>
           <FontAwesomeIcon
             icon={faX}
             style={{ position: "absolute", top: "2rem", right: "2rem" }}
-            onClick={closeModal}
+            onClick={handleTodoDetail}
           />
           <TextGroup>
             <TextBox padding="0.7rem" width="15rem">
@@ -139,7 +141,7 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
               </Button>
             </ButtonGroup>
           )}
-        </Modal>
+        </TodoDetail>
         <Background />
       </Wrapper>
     </StyledTodoItem>
@@ -169,7 +171,7 @@ const TextGroup = styled.div`
   font-size: 0.9rem;
 `;
 
-const Modal = styled(Box)`
+const TodoDetail = styled(Box)`
   position: fixed;
   top: 50%;
   left: 50%;
