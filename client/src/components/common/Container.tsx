@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 interface IContainer {
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactNode;
 }
 
 const Container = ({ children }: IContainer) => {

@@ -4,7 +4,7 @@ import theme from "../../styles/theme";
 
 interface IBox {
   padding: string;
-  children: string | JSX.Element | JSX.Element[];
+  children: React.ReactNode;
   className?: string;
 }
 

@@ -5,7 +5,7 @@ import theme from "../../styles/theme";
 interface ITextBox {
   width?: string;
   padding: string;
-  children: string | JSX.Element;
+  children: React.ReactNode;
 }
 
 const TextBox = ({ width, padding, children }: ITextBox) => {

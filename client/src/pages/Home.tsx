@@ -6,8 +6,8 @@ import TodoForm from "../components/Todo/TodoForm";
 import TodoItem from "../components/Todo/TodoItem";
 import TodoApi from "../api/todo";
 
-const Todo = () => {
-  const [todos, setTodos] = useState([]);
+const Home = () => {
+  const [todos, setTodos] = useState([{ id: "", title: "", content: "" }]);
 
   const getTodos = async () => {
     try {
@@ -28,9 +28,9 @@ const Todo = () => {
     <Container>
       <Wrapper>
         <TodoForm getTodos={getTodos} />
+        {/* 추상화 */}
         <TodoList>
-          {Array.isArray(todos) &&
-            todos.length > 0 &&
+          {todos.length > 0 &&
             todos.map(({ id, title, content }) => (
               <TodoItem key={id} id={id} title={title} content={content} getTodos={getTodos} />
             ))}
@@ -46,4 +46,4 @@ const Wrapper = styled.div`
 
 const TodoList = styled.ul``;
 
-export default Todo;
+export default Home;

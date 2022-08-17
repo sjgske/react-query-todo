@@ -7,7 +7,7 @@ interface IButton {
   width?: string;
   disabled?: boolean;
   children: React.ReactNode;
-  onClick?(e?: React.MouseEvent): void;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 const Button = ({ color, width, disabled, children, onClick }: IButton) => {

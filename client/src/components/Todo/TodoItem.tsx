@@ -14,7 +14,7 @@ interface ITodoItem {
   id: string;
   title: string;
   content: string;
-  getTodos(): void;
+  getTodos: () => void;
 }
 
 const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
