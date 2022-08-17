@@ -1,19 +1,16 @@
 import { useState } from "react";
-import { AxiosError } from "axios";
 import styled from "styled-components";
 import Button from "../common/Button";
 import Box from "../common/Box";
 import TextBox from "../common/TextBox";
 import theme from "../../styles/theme";
-import TodoApi from "../../api/todo";
+import useCreateTodo from "../../hooks/useCreateTodo";
 
-type Props = {
-  getTodos: () => void;
-};
-
-const TodoForm = ({ getTodos }: Props) => {
+const TodoForm = () => {
   const [form, setForm] = useState({ title: "", content: "" });
   const { title, content } = form;
+
+  const { mutate } = useCreateTodo();
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -23,23 +20,18 @@ const TodoForm = ({ getTodos }: Props) => {
     });
   };
 
-  const addTodo = async (e: React.FormEvent<HTMLFormElement>) => {
+  const createTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    try {
-      if (!title || !content) return;
-      await TodoApi.add({ title, content });
-      getTodos();
-      setForm({ title: "", content: "" });
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        alert(err.message);
-      }
-    }
+    if (!title || !content) return;
+    mutate(form, {
+      onSuccess: () => {
+        setForm({ title: "", content: "" });
+      },
+    });
   };
 
   return (
-    <Form onSubmit={addTodo}>
+    <Form onSubmit={createTodo}>
       <Box padding="2.2rem">
         <TodoHeader>Todo List</TodoHeader>
         <TextGroup>

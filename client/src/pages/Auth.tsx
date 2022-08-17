@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AxiosError } from "axios";
 import styled from "styled-components";
 import Container from "../components/common/Container";
 import Button from "../components/common/Button";
 import Box from "../components/common/Box";
 import TextBox from "../components/common/TextBox";
-import AuthApi from "../api/auth";
 import { setToken, isValid } from "../utils";
 import theme from "../styles/theme";
+import useLogin from "../hooks/useLogin";
+import useSignUp from "../hooks/useSignUp";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -17,6 +17,8 @@ const Auth = () => {
   const [formType, setFormType] = useState("login");
 
   const navigate = useNavigate();
+  const { mutate: loginMutate } = useLogin();
+  const { mutate: signUpMutate } = useSignUp();
   const isLoginForm = formType === "login";
 
   useEffect(() => {
@@ -27,26 +29,26 @@ const Auth = () => {
     e.preventDefault();
 
     if (isLoginForm) {
-      try {
-        const data = await AuthApi.login({ email, password });
-        setToken(data.token);
-        alert(data.message);
-        navigate("/");
-      } catch (err) {
-        if (err instanceof AxiosError) {
-          alert(err.message);
-        }
-      }
+      loginMutate(
+        { email, password },
+        {
+          onSuccess: ({ message, token }) => {
+            setToken(token);
+            alert(message);
+            navigate("/");
+          },
+        },
+      );
     } else {
-      try {
-        const data = await AuthApi.signup({ email, password });
-        alert(data.message);
-        setFormType("login");
-      } catch (err) {
-        if (err instanceof AxiosError) {
-          alert(err.message);
-        }
-      }
+      signUpMutate(
+        { email, password },
+        {
+          onSuccess: ({ message }) => {
+            alert(message);
+            setFormType("login");
+          },
+        },
+      );
     }
   };
 

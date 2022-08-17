@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { AxiosError } from "axios";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
@@ -8,21 +7,22 @@ import Button from "../common/Button";
 import Box from "../common/Box";
 import TextBox from "../common/TextBox";
 import theme from "../../styles/theme";
-import TodoApi from "../../api/todo";
+import useDeleteTodo from "../../hooks/useDeleteTodo";
+import useUpdateTodo from "../../hooks/useUpdateTodo";
 
 interface ITodoItem {
   id: string;
   title: string;
   content: string;
-  getTodos: () => void;
 }
 
-const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
+const TodoItem = ({ id, title: t, content: c }: ITodoItem) => {
   const [form, setForm] = useState({ title: t, content: c });
   const [show, setShow] = useState(false);
   const [disabledButton, setDisabledButton] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const { mutate: deleteMutate } = useDeleteTodo();
+  const { mutate: updateMutate } = useUpdateTodo();
   const { title, content } = form;
 
   useEffect(() => {
@@ -41,40 +41,24 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
     });
   };
 
-  const handleUpdateButton = () => {
-    setDisabledButton(false);
-  };
-
-  const handleCancelButton = () => {
-    setDisabledButton(true);
-  };
-
   const updateTodo = async (e: React.MouseEvent) => {
     e.preventDefault();
-    try {
-      await TodoApi.update(form, id);
-      getTodos();
-      setDisabledButton(true);
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        alert(err.message);
-      }
-    }
+    updateMutate({ title, content, id });
   };
 
   const deleteTodo = async (e: React.MouseEvent) => {
     e.preventDefault();
-    try {
-      await TodoApi.delete(id);
-      getTodos();
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        alert(err.message);
-      }
-    }
+    deleteMutate(
+      { id },
+      {
+        onSuccess: () => {
+          setDisabledButton(true);
+        },
+      },
+    );
   };
 
-  const handleTodoDetail = () => {
+  const handleShowTodoDetail = () => {
     if (show) {
       setShow(false);
       setSearchParams({});
@@ -89,7 +73,7 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
 
   return (
     <StyledTodoItem key={id}>
-      <Wrapper onClick={handleTodoDetail}>
+      <Wrapper onClick={handleShowTodoDetail}>
         <Box padding="1.4rem">
           <TodoTitle>{title}</TodoTitle>
         </Box>
@@ -101,7 +85,7 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
           <FontAwesomeIcon
             icon={faX}
             style={{ position: "absolute", top: "2rem", right: "2rem" }}
-            onClick={handleTodoDetail}
+            onClick={handleShowTodoDetail}
           />
           <TextGroup>
             <TextBox padding="0.7rem" width="15rem">
@@ -124,7 +108,7 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
           </TextGroup>
           {disabledButton ? (
             <ButtonGroup>
-              <Button width="100%" onClick={handleUpdateButton}>
+              <Button width="100%" onClick={() => setDisabledButton(false)}>
                 수정
               </Button>
               <Button width="100%" onClick={deleteTodo}>
@@ -136,7 +120,7 @@ const TodoItem = ({ id, title: t, content: c, getTodos }: ITodoItem) => {
               <Button color={theme.blue} width="100%" onClick={updateTodo}>
                 수정 완료
               </Button>
-              <Button color={theme.grey} width="100%" onClick={handleCancelButton}>
+              <Button color={theme.grey} width="100%" onClick={() => setDisabledButton(true)}>
                 취소
               </Button>
             </ButtonGroup>
