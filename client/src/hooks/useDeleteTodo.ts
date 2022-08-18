@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "../api/api";
+import { toast } from "react-toastify";
+import api from "../api";
 
 interface DeleteTodoData {
   data: null;
@@ -17,6 +18,7 @@ const useDeleteTodo = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getTodos"]);
+        toast.success("할 일이 삭제되었습니다.");
       },
     },
   );

@@ -1,15 +1,12 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Container from "./Container";
 import theme from "../../styles/theme";
 
 const Header = () => {
-  const navigate = useNavigate();
-
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/auth");
   };
 
   return (

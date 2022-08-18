@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import api from "../api/api";
+import api from "../api";
 
 interface Todo {
   id: string;

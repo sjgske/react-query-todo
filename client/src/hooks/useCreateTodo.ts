@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import api from "../api/api";
+import { toast } from "react-toastify";
+import api from "../api";
 
 interface Todo {
   id: string;
@@ -23,6 +24,7 @@ const useCreateTodo = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getTodos"]);
+        toast.success("할 일이 등록되었습니다!");
       },
     },
   );
