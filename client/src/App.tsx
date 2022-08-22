@@ -20,7 +20,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Header />
-      <ToastContainer />
+      <ToastContainer style={{ top: "80px" }} />
       <Routes>
         <Route
           path="/"
