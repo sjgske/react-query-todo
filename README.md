@@ -107,15 +107,15 @@ npm start
 - [x] View / Business 로직 분리
     > 화면에 보여지는 스타일링과 직접적인 관련이 없는 비즈니스 로직은 View component 외부로 분리하였다.
 
-    - api 호출 로직을 react-query로 전역에서 관리하여 커스텀 훅으로 분리하였다. [커밋 보기](49eaa29aa47cd0f6c05b41389f306c5dfa2d1491)
-    - 로그인/로그아웃 상태를 각각의 페이지에서 확인하지 않고 라우터 단에서 체크한 후 redirect 시켜주도록 하였다. [커밋 보기](bc025b733e3dc43bfa2f91087c7be3e92bb4628e)
+    - api 호출 로직을 react-query로 전역에서 관리하여 커스텀 훅으로 분리하였다. [커밋 보기](https://github.com/sjgske/wanted-pre-onboarding-challenge-fe-1/commit/49eaa29aa47cd0f6c05b41389f306c5dfa2d1491#diff-f8a4ee6f18be35b87fbff7acda42e3b5be5401f79c2ec280564eb5fd303a696b)
+    - 로그인/로그아웃 상태를 각각의 페이지에서 확인하지 않고 라우터 단에서 체크한 후 redirect 시켜주도록 하였다. [커밋 보기](https://github.com/sjgske/wanted-pre-onboarding-challenge-fe-1/commit/bc025b733e3dc43bfa2f91087c7be3e92bb4628e#diff-ce931a2269184f4b06d6be36ead81f2ca3e95e44a5c8d600f47da1dfa35b9337)
 
 - [x] 전역 에러 처리
-    - try-catch ➡ 에러 처리 로직을 전역 queryClient에서 담당하도록 분리하여 유지보수를 향상시켰다. [커밋 보기](https://github.com/sjgske/wanted-pre-onboarding-challenge-fe-1/commit/558e9ea7600c4e91e1b67a9efa90f2c88039fb70#diff-e1037d6d8abe24e1273b402e4ed0ec490b5d522c0d267c507de7d5fa705f28bf)
-    - alert ➡ toast ui를 적용하여 플로우가 멈추는 것을 막았다. [커밋 보기](https://github.com/sjgske/wanted-pre-onboarding-challenge-fe-1/commit/558e9ea7600c4e91e1b67a9efa90f2c88039fb70#diff-e1037d6d8abe24e1273b402e4ed0ec490b5d522c0d267c507de7d5fa705f28bf)
+    - ~~try-catch~~ ➡ 에러 처리 로직을 전역 queryClient에서 담당하도록 분리하여 유지보수를 향상시켰다. [커밋 보기](https://github.com/sjgske/wanted-pre-onboarding-challenge-fe-1/commit/558e9ea7600c4e91e1b67a9efa90f2c88039fb70#diff-e1037d6d8abe24e1273b402e4ed0ec490b5d522c0d267c507de7d5fa705f28bf)
+    - ~~alert~~ ➡ toast ui를 적용하여 플로우가 멈추는 것을 막았다. [커밋 보기](https://github.com/sjgske/wanted-pre-onboarding-challenge-fe-1/commit/558e9ea7600c4e91e1b67a9efa90f2c88039fb70#diff-e1037d6d8abe24e1273b402e4ed0ec490b5d522c0d267c507de7d5fa705f28bf)
 
 - [x] any, 타입 단언 제거
-    - error 타입 any  narrowing 처리하였다.
+    - error 타입 `any` ➡ `AxiosError`, narrowing 처리하였다.
       ```ts
       // before
       ...
@@ -130,7 +130,7 @@ npm start
         }
       },
       ```
-    - 타입 단언을 제거하고 input value를 state로 관리하였다.
+    - 타입 단언을 제거하고 input value를 useState로 관리하였다.
       ```ts
       // before
       const target = e.target as HTMLFormElement & {
@@ -151,7 +151,7 @@ npm start
 
 - [x] 중복되는 UI 해결
     - 회원가입, 로그인 페이지에서 동일한 form UI를 중복해서 사용하고 있는 문제가 있었다.
-    - 한 페이지에서 `formType` 상태값에 따라 로그인 / 회원가입 기능을 수행하도록 구현하여 중복되는 코드를 해결하였다. [커밋 보기](884e848af1742bed2619aadcc8aabcec4dd7d68a)
+    - 한 페이지에서 `formType` 상태값에 따라 로그인 / 회원가입 기능을 수행하도록 구현하여 중복되는 코드를 해결하였다. [커밋 보기](https://github.com/sjgske/wanted-pre-onboarding-challenge-fe-1/commit/be0e9854fd909d1c3ee8908ae3aaff111a29a885#diff-3608a5cb0ed08e3c9d84d4945def14855eab730dd89a1a10eb3e945bb53b506c)
 <br>
 
 ## 6. 느낀 점 및 한계
