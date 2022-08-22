@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Button from "../components/common/Button";
-import Box from "../components/common/Box";
-import TextBox from "./common/TextBox";
-import theme from "../styles/theme";
-import { setToken, isValid } from "../utils";
-import useLogin from "../hooks/useLogin";
-import useSignUp from "../hooks/useSignUp";
+import Button from "../common/Button";
+import Box from "../common/Box";
+import TextBox from "../common/TextBox";
+import theme from "../../styles/theme";
+import { setToken, isValid } from "../../utils";
+import useLogin from "../../hooks/useLogin";
+import useSignUp from "../../hooks/useSignUp";
 import { toast } from "react-toastify";
 
 const AuthForm = () => {

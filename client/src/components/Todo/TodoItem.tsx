@@ -84,7 +84,7 @@ const TodoItem = ({ id, title: t, content: c }: ITodoItem) => {
           <TodoHeader>상세</TodoHeader>
           <FontAwesomeIcon
             icon={faX}
-            style={{ position: "absolute", top: "2rem", right: "2rem" }}
+            style={{ position: "absolute", top: "2rem", right: "2rem", cursor: "pointer" }}
             onClick={handleShowTodoDetail}
           />
           <TextGroup>

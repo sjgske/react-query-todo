@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Container from "../components/common/Container";
-import AuthForm from "../components/AuthForm";
+import AuthForm from "../components/Auth/AuthForm";
 
 const Auth = () => {
   return (
