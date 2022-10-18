@@ -44,6 +44,7 @@ const TodoItem = ({ id, title: t, content: c }: ITodoItem) => {
   const updateTodo = async (e: React.MouseEvent) => {
     e.preventDefault();
     updateMutate({ title, content, id });
+    setDisabledButton(true);
   };
 
   const deleteTodo = async (e: React.MouseEvent) => {

@@ -16,7 +16,7 @@ const useUpdateTodo = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getTodos"]);
-        toast.success("할 일이 삭제되었습니다.");
+        toast.success("할 일이 수정되었습니다.");
       },
     },
   );
