@@ -4,16 +4,14 @@ import Auth from "./pages/Auth";
 import Home from "./pages/Home";
 import ErrorPage from "./pages/ErrorPage";
 import Header from "./components/common/Header";
+import useToken from "./hooks/common/useToken";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
-  const isLoggedIn = localStorage.getItem("token");
+  const token = useToken();
   const location = useLocation();
-  if (!isLoggedIn) {
-    return <Navigate to="/auth" state={{ from: location }} replace />;
-  }
-  return children;
+  return token ? children : <Navigate to="/auth" state={{ from: location }} replace />;
 };
 
 const App = () => {
